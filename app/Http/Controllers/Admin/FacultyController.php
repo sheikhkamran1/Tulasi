@@ -3,10 +3,10 @@
 namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
-use App\Models\Setting;
+use App\Models\Faculty;
 use Illuminate\Http\Request;
 
-class SettingController extends Controller
+class FacultyController extends Controller
 {
     /**
      * Display a listing of the resource.
@@ -15,9 +15,7 @@ class SettingController extends Controller
      */
     public function index()
     {
-        
-        $setting = Setting::first();
-        return view('backend.setting.index',compact('setting'));
+        return view('backend.faculty.index');
     }
 
     /**
@@ -27,7 +25,7 @@ class SettingController extends Controller
      */
     public function create()
     {
-        return view('backend.setting.create');
+        return view('backend.faculty.create');
     }
 
     /**
@@ -38,21 +36,19 @@ class SettingController extends Controller
      */
     public function store(Request $request)
     {
-        $setting = new Setting();
-        $setting->name = $request->name;
-        $setting->address = $request->address;
-        $setting->contact = $request->contact;
-        $setting->email = $request->email;
-        $setting->regno = $request->regno;
+        // return dd($request->all());
+        $faculty = new Faculty();
+        $faculty->faculty = $request->faculty;
+        $faculty->description = $request->description;
         
         //for logo
-        if($request->hasFile('logo')){
-            $file = $request->logo;
+        if($request->hasFile('image')){
+            $file = $request->image;
             $newName= time() . $file->getClientOriginalName();
             $file->move('images',$newName);
-            $setting->logo = 'images/' . $newName;
+            $faculty->image = 'images/' . $newName;
         }
-        $setting->save();
+        $faculty->save();
         $request->session()->flash('message','Saved Successfully');
         return redirect()->back();
     }
@@ -76,8 +72,7 @@ class SettingController extends Controller
      */
     public function edit($id)
     {
-        $setting = Setting::find($id);
-        return view('backend.setting.edit',compact('setting'));
+        //
     }
 
     /**
@@ -89,23 +84,7 @@ class SettingController extends Controller
      */
     public function update(Request $request, $id)
     {
-        $setting = Setting::find($id);
-        $setting->name = $request->name;
-        $setting->address = $request->address;
-        $setting->contact = $request->contact;
-        $setting->email = $request->email;
-        $setting->regno = $request->regno;
-        
-        //for logo
-        if($request->hasFile('logo')){
-            $file = $request->logo;
-            $newName= time() . $file->getClientOriginalName();
-            $file->move('images',$newName);
-            $setting->logo = 'images/' . $newName;
-        }
-        $setting->update();
-        $request->session()->flash('message','Updated Successfully');
-        return redirect()->back();
+        //
     }
 
     /**
